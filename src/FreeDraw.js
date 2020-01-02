@@ -1,12 +1,24 @@
-import 'core-js';
+import 'core-js/es/symbol';
+import 'core-js/es/object';
+import 'core-js/es/function';
+import 'core-js/es/parse-int';
+import 'core-js/es/parse-float';
+import 'core-js/es/number';
+import 'core-js/es/math';
+import 'core-js/es/string';
+import 'core-js/es/date';
+import 'core-js/es/array';
+import 'core-js/es/regexp';
+import 'core-js/es/map';
+import 'core-js/es/weak-map';
+import 'core-js/es/set';
+
 import 'regenerator-runtime/runtime';
 
 import { FeatureGroup, Point } from 'leaflet';
 import { select } from 'd3-selection';
 import { line, curveMonotoneX } from 'd3-shape';
-import Set from 'es6-set';
-import WeakMap from 'es6-weak-map';
-import Symbol from 'es6-symbol';
+
 import { updateFor } from './helpers/Layer';
 import { createFor, removeFor, clearFor } from './helpers/Polygon';
 import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL, modeFor } from './helpers/Flags';
@@ -88,9 +100,9 @@ export default class FreeDraw extends FeatureGroup {
         this.map = map;
 
         // Attach the cancel function and the instance to the map.
-        map[cancelKey] = () => {};
+        map[cancelKey] = () => { };
         map[instanceKey] = this;
-        map[notifyDeferredKey] = () => {};
+        map[notifyDeferredKey] = () => { };
 
         // Setup the dependency injection for simplifying the polygon.
         map.simplifyPolygon = simplifyPolygon;
@@ -103,8 +115,8 @@ export default class FreeDraw extends FeatureGroup {
 
         // Instantiate the SVG layer that sits on top of the map.
         const svg = this.svg = select(map._container).append('svg')
-                                 .classed('free-draw', true).attr('width', '100%').attr('height', '100%')
-                                 .style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
+            .classed('free-draw', true).attr('width', '100%').attr('height', '100%')
+            .style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
 
         // Set the mouse events.
         this.listenForEvents(map, svg, this.options);
@@ -261,7 +273,7 @@ export default class FreeDraw extends FeatureGroup {
             const mouseUp = (_, create = true) => {
 
                 // Remove the ability to invoke `cancel`.
-                map[cancelKey] = () => {};
+                map[cancelKey] = () => { };
 
                 // Stop listening to the events.
                 map.off('mouseup', mouseUp);
@@ -313,7 +325,7 @@ export default class FreeDraw extends FeatureGroup {
         const lineFunction = line().curve(curveMonotoneX).x(d => d.x).y(d => d.y);
 
         return toPoint => {
-            const lineData = [ lastPoint, toPoint ];
+            const lineData = [lastPoint, toPoint];
             lastPoint = toPoint;
             // Draw SVG line based on the last movement of the mouse's position.
             svg.append('path').classed('leaflet-line', true)
